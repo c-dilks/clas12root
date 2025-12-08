@@ -197,14 +197,15 @@ namespace clas12 {
 
     /// @brief get the particle bank, depending on your configuration
     /// @returns a reference to `REC::Particle` by default, or a reference to `RECFT::Particle` if you are using
-    /// FT-based PID (you have called `useFTBased`)
+    /// FT-based PID (you have called `useFTBased`) and the `RECFT::Particle` bank is not empty
+    /// (the empty check ignores `hipo::bank::rowlist` filtering, _e.g._, applied by an Iguana filter algorithm)
     /// @note this method returns a base-class reference, `hipo::bank&`, while many other bank reference accessors
     /// return derived-class references, such as `getRECParticle`
     /// @see specific particle-bank accessors:
     /// - getRECParticle
     /// - getRECFTParticle
     hipo::bank& getParticleBank() const {
-      if(_useFTBased)
+      if(_useFTBased && getRECFTParticle().getRows()>0)
         return getRECFTParticle();
       else
         return getRECParticle();
